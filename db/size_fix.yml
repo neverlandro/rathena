@@ -1,0 +1,11 @@
+Header:
+  Type: SIZE_FIX_DB
+  Version: 1
+
+ Footer:
+  Imports:
+  - Path: db/pre-re/size_fix.yml
+    Mode: Prerenewal
+  - Path: db/re/size_fix.yml
+    Mode: Renewal
+  - Path: db/import/size_fix.yml
