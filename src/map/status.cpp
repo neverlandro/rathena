@@ -556,7 +556,7 @@ void initChangeTables(void)
 			EFST_ASSUMPTIO_BUFF	, SCB_DEF2 );
 #endif
 #ifdef RENEWAL
-	set_sc( HP_BASILICA			, SC_BASILICA	, EFST_BASILICA_BUFF	, SCB_NONE );
+	set_sc( HP_BASILICA			, SC_BASILICA	, EFST_BASILICA_BUFF	, SCB_ALL );
 #else
 	add_sc( HP_BASILICA		, SC_BASILICA		);
 #endif
@@ -3235,6 +3235,10 @@ static int status_get_hpbonus(struct block_list *bl, enum e_status_bonus type) {
 				bonus += 30;
 			if(sc->data[SC_GLASTHEIM_HPSP])
 				bonus += sc->data[SC_GLASTHEIM_HPSP]->val1;
+#ifdef RENEWAL
+			if (sc->data[SC_ANGELUS])
+				bonus += sc->data[SC_ANGELUS]->val1 * 50;
+#endif
 		}
 	} else if (type == STATUS_BONUS_RATE) {
 		struct status_change *sc = status_get_sc(bl);
@@ -3286,8 +3290,6 @@ static int status_get_hpbonus(struct block_list *bl, enum e_status_bonus type) {
 			if(sc->data[SC_LAUDAAGNUS])
 				bonus += 2 + (sc->data[SC_LAUDAAGNUS]->val1 * 2);
 #ifdef RENEWAL
-			if (sc->data[SC_ANGELUS])
-				bonus += sc->data[SC_ANGELUS]->val1 * 50;
 			if (sc->data[SC_NIBELUNGEN] && sc->data[SC_NIBELUNGEN]->val2 == 4)
 				bonus += 30;
 #endif
@@ -4379,6 +4381,7 @@ int status_calc_pc_sub(struct map_session_data* sd, enum e_status_calc_opt opt)
 			sd->right_weapon.addele[ELE_UNDEAD] += i;
 			sd->left_weapon.addele[ELE_DARK] += i;
 			sd->left_weapon.addele[ELE_UNDEAD] += i;
+			sd->magic_addele[ELE_HOLY] += sc->data[SC_BASILICA]->val1 * 3;			
 		}
 #endif
 		if(sc->data[SC_PROVIDENCE]) {
